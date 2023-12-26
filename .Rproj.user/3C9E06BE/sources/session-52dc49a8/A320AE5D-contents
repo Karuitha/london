@@ -1,0 +1,28 @@
+---
+title: "London House Prices"
+author: "John Karuitha"
+format: html
+editor: visual
+---
+
+# Background
+
+The aim of this study is to test the hypothesis that house prices positively correlate with vicinity to greens paces in London.
+
+For the purpose of this study I will first be looking at all London wards listed in the access public open space data set and running the statistical tests on these in correspondence with the median house price data set i.e. to determine whether there is a link between access to local parks and median house prices.
+
+In a second step I would only be looking at the wards in the 12 boroughs that make up the "Inner London boroughs" as stated in the third document attached below.
+
+I have attached the two data sets, which will be used for this inquiry. The first one containing information about access to public open space by borough and ward in London and for this dataset I will be focusing soley on the category of "Local Parks". The second dataset contains information on the median house prices in London by ward. as described above I would look at all wards in London as a first step and then as a second separate analysis only onsider the wards which belong to the 12 "Inner London boroughs". I have attached the seperate document, stating which boroughs belong to "Inner London". Using the two datasets I would like you to employ a range of statistical techniques to analyse the data including:
+
+-   T-tests
+
+-   ANOVA
+
+-   Analysis if spatial autocorrelation (e.g. Moran's I or LISA mapping)
+
+-   Correlations or chi-square tests of association
+
+-   Linear, multiple or logistic models
+
+As explained above, the above analysis should be conducted in a first step for all the wards in London and in the second setp for the 12 wards in inner London. Please display the results neatly, clearly legible, clearly labelled, using colours, as these outputs should look professional and will be marked. Note that you should NOT just rely on exploratory descriptive statistics (e.g. means), graphs (e.g. histograms) and maps (e.g. choropleths).

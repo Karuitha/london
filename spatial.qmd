@@ -1,0 +1,243 @@
+---
+title: "Spatial Data Analysis on Green Spaces and House Prices in London Boroughs"
+author: "MS"
+format: 
+  pdf:
+    toc: true
+    toc-depth: 3
+    toc-title: Contents
+    toccolor: blue
+    number-sections: true
+    number-depth: 3
+editor: visual
+execute: 
+  echo: false
+  warning: false
+  message: false
+---
+
+\newpage 
+
+# Background
+
+In the urban context of London, the relationship between access to green spaces and housing prices has become a significant focal point for investigation. As urbanization intensifies, the availability of green spaces in a city has profound implications for the quality of life and the economic landscape. Access to parks, gardens, and recreational areas not only contributes to the overall well-being of residents but also serves as a potential factor influencing housing market dynamics. Understanding this relationship is crucial for urban planners, policymakers, and residents alike, as it can inform strategic decisions regarding green space preservation, urban development, and housing affordability in a metropolis as dynamic and diverse as London.
+
+Against this backdrop, the main objective of the forthcoming analysis is to systematically explore and establish the intricate relationship between access to green spaces and the pricing of residential properties in London. This investigation aims to employ quantitative methods to discern patterns, correlations, and potential causation between the proximity and quality of green spaces and the fluctuating prices of houses across different neighborhoods in the city. By unraveling these connections, the analysis seeks to contribute valuable insights that can guide urban planning initiatives, inform housing policies, and enhance our understanding of the complex interplay between urban ecology and real estate dynamics in the context of London.
+
+
+```{r}
+## Load packages manager ----
+if(!require(pacman)){
+  install.packages('pacman')
+}
+
+## Load required packages ----
+p_load(tidyverse, janitor, 
+       skimr, mice, ggthemes, 
+       rmarkdown, readxl, 
+       conflicted, naniar, GGally,
+       modelsummary, sf, tmap, gt)
+## Load from github ----
+p_load_gh("datarootsio/artyfarty")
+
+## Set the options ----
+options(digits = 3)
+options(scipen = 999)
+
+## Set a nice theme for plots ----
+theme_set(theme_bain())
+```
+
+# Objective
+
+The main objective of this analysis is to establish the relationship between access to green spaces and the price of houses in London. 
+
+
+# Data
+
+```{r}
+inner_london <- c('Camden', 'Greenwich',
+'Hackney', 'Hammersmith and Fulham', 'Islington',
+'Royal Borough of Kensington and Chelsea', 'Lambeth', 'Lewisham', 'Southwark',
+'Tower', 'Hamlets', 'Wandsworth', 'Westminster', 'City of London')
+
+outer_london <- c('Barking and Dagenham', 'Barnet', 'Bexley', 'Brent', 'Bromley', 
+'Croydon', 'Ealing', 'Enfield', 'Haringey',
+'Harrow', 'Havering', 'Hillingdon', 
+'Hounslow', 'Kingston upon Thames', 'Merton',
+'Newham', 'Redbridge', 'Richmond upon Thames', 'Sutton', 'Waltham Forest')
+```
+
+
+
+
+```{r}
+## Maps ----
+parks <- read_sf("data/London-wards-2018/London-wards-2018_ESRI/London_Ward_CityMerged.shp") %>% 
+  left_join(
+## Parks ----
+read_csv("data/access.csv", 
+                 skip = 1,
+         na = "") %>% 
+  clean_names() %>% 
+  mutate(area = case_when(
+    borough_name %in% inner_london ~ "inner_london",
+    .default = "outer_london"
+  )), 
+            by = join_by(
+              GSS_CODE == wd13cd 
+            )) %>% 
+  left_join(
+####################################
+read_csv('data/prices.csv', 
+                           skip = 5,
+                   na = ":") %>% 
+  janitor::remove_empty() %>% 
+  clean_names() %>% 
+  select(ward_code, ward_name, starts_with("year")) %>% 
+  mutate(
+    across(
+      .cols = c(starts_with("Year ending") & is.character),
+      .fns = ~ parse_number(.x)
+    )
+  ),
+
+by = join_by(
+  GSS_CODE == ward_code,
+  NAME == ward_name
+)
+) %>% 
+  pivot_longer(cols = starts_with("year_ending"),
+               names_to = "year",
+               values_to = "prices") %>%
+  mutate(
+    year = str_extract(year, "\\d{4}$"),
+    year = as.numeric(year)
+  ) %>% 
+  dplyr::filter(year == 2017)
+
+```
+
+The data contains `r ncol(parks)` variables and `r nrow(parks)` observations of data. I augment the data with data for the map of london from the `sf` package to permit data visualization using maps. 
+
+We examine the missing values in the data. The variable prices in the prices has 2492 missing values, while eight (8) variables in the parks data have two missing values each.
+
+```{r}
+#| eval: false
+## Missing values ----
+parks %>% 
+  sapply(is.na) %>% 
+  colSums() %>% 
+  tibble(variables = names(parks),
+         missing = .) %>% 
+  arrange(desc(missing)) %>% 
+  dplyr::filter(missing > 0) %>% 
+  gt()
+
+```
+
+# **PART A: ALL LONDON WARDS**
+
+## **Data Visualization**
+
+
+```{r}
+#| fig-cap: "House Price in Greater London Boroughs"
+#| fig-height: 6
+#| fig-width: 8
+## Draw a map ----
+colors <- RColorBrewer::brewer.pal(7, "RdPu")
+tmap::tm_shape(parks) +
+  tm_fill(col = 'prices',
+          style = "pretty",
+          palette = colors)
+```
+
+
+
+```{r}
+parks %>% 
+  ggplot(mapping = aes(x = open_space, y = prices)) + 
+  geom_point()
+
+
+parks %>% 
+  ggplot(mapping = aes(x = local_parks, y = prices)) + 
+  geom_point()
+
+
+parks %>% 
+  ggplot(mapping = aes(x = district_parks, y = prices)) + 
+  geom_point()
+
+parks %>% 
+  ggplot(mapping = aes(x = metropolitan_parks, 
+                       y = prices)) + 
+  geom_point()
+
+
+
+parks %>% 
+  ggplot(mapping = aes(x = regional_parks, y = prices)) + 
+  geom_point()
+
+```
+
+
+## **Statistical Tests**
+
+- T-tests
+
+- ANOVA
+
+- Analysis if spatial autocorrelation (e.g. Moran's I or LISA mapping). 
+
+- Correlations or chi-square tests of association. 
+
+- Linear, multiple or logistic models
+
+```{r}
+## Summary stats ----
+parks %>% 
+  as.data.frame() %>% 
+  dplyr::select(prices, open_space, 
+         local_parks, district_parks, 
+         metropolitan_parks, regional_parks) %>% 
+  modelsummary::datasummary_skim()
+```
+
+
+```{r}
+## Pairs plots ----
+parks %>% 
+  as.data.frame() %>% 
+  dplyr::select(prices, open_space, 
+         local_parks, district_parks, 
+         metropolitan_parks, regional_parks) %>% 
+  modelsummary::datasummary_correlation()
+```
+
+
+
+
+# **PART B: INNER LONDON**
+
+```{r}
+inner_parks <- parks %>% 
+  dplyr::filter(area == "inner_london")
+```
+
+
+```{r}
+#| fig-cap: "House Price in Inner London Boroughs"
+#| fig-height: 6
+#| fig-width: 8
+## Draw a map ----
+
+tmap::tm_shape(inner_parks) +
+  tm_fill(col = 'prices',
+          style = "pretty",
+          palette = colors)
+
+```
+

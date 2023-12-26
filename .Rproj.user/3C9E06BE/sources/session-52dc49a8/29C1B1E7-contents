@@ -1,0 +1,54 @@
+---
+title: "**BBM 419: Financial Statements Analysis**"
+subtitle: "***Assignment 4***"
+author: John Karuitha
+date: today
+date-format: long
+date-modified: long
+format: 
+   pdf:
+     include-in-header: 
+         text: |
+            \usepackage{scrlayer-scrpage}
+            \clearpairofpagestyles
+            \cohead[{\includegraphics[width=5cm]{karu2.png}}]{Assignment 2}
+editor: visual
+---
+
+# **Instructions**
+
+1.  Attempt the assignment in groups of not more than 3 people.
+2.  Each group must pick one company among those listed at the NSE. No two groups should analyse the same company. To check which company other groups have chosen, please visit this site <https://docs.google.com/spreadsheets/d/1qt14Gp2BFLDhCTvjb73dWZUJkDHFsfL4THEbmBbMQBg/edit?usp=sharing>
+3.  Each group should add the details of members in the sheet above. [^1]
+4.  The questions must be answered in reference to your chosen company. Do not just copy and paste the class notes.
+5.  All references should be in the APA format.
+6.  Attach a plagiarism check for your assignment. Talk to the librarians for assistance.
+7.  The deadline for submission is Friday, November 30, 2023.
+8.  This part requires you to conduct financial statement analysis of a publicly listed company for the year 2022.
+9.  An important element of this project is the requirement of identifying and obtaining relevant, publicly available information. Therefore, you should ensure that you are able to access sufficient information for your selected company.
+
+[^1]: See https://docs.google.com/spreadsheets/d/1qt14Gp2BFLDhCTvjb73dWZUJkDHFsfL4THEbmBbMQBg/edit?usp=sharing
+
+# **Question One**
+
+-   What is the name of the company that you/your group members were assigned to complete this project?
+
+-   What is the industry in which your company belongs to?
+
+-   What is the view of the management of the company about the future outlook and performance of the company?
+
+# **Question Two**
+
+Identify two (2) pieces of information not included in the major financial statements (but still in the annual report) that you think would be important to someone considering whether to invest the company. Discuss your reasons for believing that this information would be important in making an investment decision.
+
+# **Question Three**
+
+Analyse your allocated company’s investing and financing activities for the year 2022 as identified in the statement of cash flows, specifically identifying the two largest investing activities and the two largest financing activities. Evaluate the cash flow from operating activities of the firm (specifically analyse whether the company is performing better over the years, discuss whether cash flow from operating activities appears to be satisfactory given the current business environment and firms’ stage in life cycle).
+
+# **Question Four**
+
+Assume that you are evaluating your allocated company. Only use the MOST appropriate ratios for the year 2022 from the annual report and evaluate whether one should provide long-term loan to this company \[Use at least 4 ratios\].
+
+# **Question Five**
+
+Assume that you want to buy stock of this company. Use the most appropriate efficiency and profitability ratios from the annual report and use these data to evaluate whether this company is a suitable candidate for investment purpose \[Use at least 4 ratios for efficiency and 4 ratios for profitability\].
